@@ -6,12 +6,13 @@ import Image from 'next/image';
 import { useLanguage } from '@/lib/language-context';
 import { getTranslation } from '@/lib/translations';
 import Link from 'next/link';
+import { IProfessional } from '@/lib/models/Professional';
 
 export default function ProfessionalProfilePage() {
   const params = useParams();
   const { language } = useLanguage();
   const t = getTranslation(language);
-  const [professional, setProfessional] = useState<any>(null);
+  const [professional, setProfessional] = useState<IProfessional | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -100,7 +101,7 @@ export default function ProfessionalProfilePage() {
                     {professional.rating}
                   </span>
                   <span className="ml-2 text-gray-500">
-                    ({professional.reviewCount} {t.reviews})
+                    ({professional.totalReviews} {t.reviews})
                   </span>
                 </div>
               </div>
@@ -115,9 +116,6 @@ export default function ProfessionalProfilePage() {
               >
                 {t.hireNow}
               </Link>
-              <p className="text-sm text-gray-500 mt-2">
-                {professional.projectsCompleted} {t.projectsCompleted}
-              </p>
             </div>
           </div>
         </div>
@@ -165,7 +163,7 @@ export default function ProfessionalProfilePage() {
           <h2 className="text-2xl font-bold text-gray-900 mb-6">{t.portfolio}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {(professional.portfolio || []).map((item) => (
-              <div key={item.id} className="rounded-lg overflow-hidden border border-gray-200">
+              <div key={item.title} className="rounded-lg overflow-hidden border border-gray-200">
                 <Image
                   src={item.image}
                   alt={item.title}
@@ -188,11 +186,11 @@ export default function ProfessionalProfilePage() {
         <div className="bg-white rounded-lg shadow-md p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">{t.reviews}</h2>
           <div className="space-y-6">
-            {(professional.reviews || []).map((review) => (
-              <div key={review.id} className="border-b border-gray-200 pb-6 last:border-b-0">
+            {(professional.reviews || []).map((review, index) => (
+              <div key={index} className="border-b border-gray-200 pb-6 last:border-b-0">
                 <div className="flex items-center justify-between mb-3">
                   <div>
-                    <p className="font-semibold text-gray-900">{review.client}</p>
+                    <p className="font-semibold text-gray-900">{review.clientName}</p>
                     <p className="text-sm text-gray-500">
                       {new Date(review.date).toLocaleDateString(
                         language === 'en' ? 'en-US' : 'fr-FR',
