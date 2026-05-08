@@ -1,6 +1,7 @@
-import mongoose, { Schema, Model } from 'mongoose';
+import mongoose, { Schema, Model } from "mongoose";
 
 export interface IProfessional {
+  _id?: string;
   name: string;
   title?: string;
   bio: string;
@@ -47,12 +48,16 @@ const ProfessionalSchema = new Schema<IProfessional>({
     type: String,
     required: true,
   },
-  skills: [{
-    type: String,
-  }],
-  languages: [{
-    type: String,
-  }],
+  skills: [
+    {
+      type: String,
+    },
+  ],
+  languages: [
+    {
+      type: String,
+    },
+  ],
   location: {
     type: String,
     required: true,
@@ -63,7 +68,7 @@ const ProfessionalSchema = new Schema<IProfessional>({
   },
   avatar: {
     type: String,
-    default: 'https://i.pravatar.cc/150',
+    default: "https://i.pravatar.cc/150",
   },
   rating: {
     type: Number,
@@ -73,26 +78,32 @@ const ProfessionalSchema = new Schema<IProfessional>({
     type: Number,
     default: 0,
   },
-  categories: [{
-    type: String,
-  }],
-  portfolio: [{
-    title: String,
-    titleFr: String,
-    image: String,
-    description: String,
-    descriptionFr: String,
-  }],
-  reviews: [{
-    clientName: String,
-    rating: Number,
-    comment: String,
-    commentFr: String,
-    date: {
-      type: Date,
-      default: Date.now,
+  categories: [
+    {
+      type: String,
     },
-  }],
+  ],
+  portfolio: [
+    {
+      title: String,
+      titleFr: String,
+      image: String,
+      description: String,
+      descriptionFr: String,
+    },
+  ],
+  reviews: [
+    {
+      clientName: String,
+      rating: Number,
+      comment: String,
+      commentFr: String,
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
   isActive: {
     type: Boolean,
     default: true,
@@ -103,4 +114,5 @@ const ProfessionalSchema = new Schema<IProfessional>({
   },
 });
 
-export default mongoose.models.Professional || mongoose.model<IProfessional>('Professional', ProfessionalSchema);
+export default mongoose.models.Professional ||
+  mongoose.model<IProfessional>("Professional", ProfessionalSchema);
